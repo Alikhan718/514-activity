@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+    bucket  = "rit-unique-tfstate"
+    key     = "wordpress/terraform.tfstate"
+    region  = "us-east-2"
+    encrypt = true
+  }
+}
+
 # Configure the AWS Provider
 provider "aws" {
   region = "us-east-2"  # Set AWS region to US East 1 (N. Virginia)

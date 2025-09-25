@@ -14,7 +14,6 @@ env:
   TF_STATE_BUCKET: rit-unique-tfstate         # create once in AWS S3
   TF_STATE_KEY: wordpress/terraform.tfstate   # consistent path
   TF_STATE_REGION: us-east-2                  # match AWS_REGION
-  TF_WORKSPACE: default                       # keep default unless using workspaces
 
 jobs:
   terraform_apply:
@@ -45,9 +44,6 @@ jobs:
             -backend-config="key=${TF_STATE_KEY}" \
             -backend-config="region=${TF_STATE_REGION}" \
             -backend-config="encrypt=true"
-
-      - name: Workspace select/create
-        run: terraform workspace select "${TF_WORKSPACE}" || terraform workspace new "${TF_WORKSPACE}"
 
       - name: Terraform Plan
         run: terraform plan -input=false
@@ -83,9 +79,6 @@ jobs:
             -backend-config="key=${TF_STATE_KEY}" \
             -backend-config="region=${TF_STATE_REGION}" \
             -backend-config="encrypt=true"
-
-      - name: Workspace select
-        run: terraform workspace select "${TF_WORKSPACE}"
 
       - name: Debug state (optional)
         run: terraform state list || echo "State is empty"
